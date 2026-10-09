@@ -1,9 +1,8 @@
 :root {
-	font: 18px / 145% var(--sans);
+	font: 18px / 145% var(--font);
 	letter-spacing: 0.18px;
-	color-scheme: light dark;
-	color: var(--text);
-	background: var(--bg);
+	color: var(--text-primary);
+	background: var(--bg-primary);
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;

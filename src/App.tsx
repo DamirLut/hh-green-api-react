@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { AuthPage } from "./pages/auth/auth.page";
+import { useSyncSystemTheme } from "./store/theme.store";
 
 function App() {
-	return <>Hello Green-Api hh!</>;
+	useSyncSystemTheme();
+
+	return <AuthPage />;
 }
 
 export default App;

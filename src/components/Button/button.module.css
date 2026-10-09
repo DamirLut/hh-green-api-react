@@ -1,0 +1,109 @@
+.button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	box-sizing: border-box;
+	border: 0;
+	font-family: var(--font);
+	color: var(--button-fg);
+	background-color: var(--button-bg);
+	text-decoration: none;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.button:disabled {
+	cursor: not-allowed;
+	opacity: 0.5;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.button:hover:not(:disabled) {
+		background-color: var(--button-bg-hover);
+	}
+}
+
+.button:active:not(:disabled) {
+	background-color: var(--button-bg-pressed);
+}
+
+.button.stretched {
+	width: 100%;
+}
+
+/* Sizes */
+.size_xsmall {
+	height: 32px;
+	min-width: 40px;
+	padding: 6px 12px;
+	border-radius: 8px;
+	font-size: 14px;
+	line-height: 20px;
+	font-weight: 500;
+}
+
+.size_small {
+	height: 40px;
+	min-width: 48px;
+	padding: 10px 12px;
+	border-radius: 12px;
+	font-size: 16px;
+	line-height: 20px;
+	font-weight: 500;
+}
+
+.size_medium {
+	height: 52px;
+	min-width: 56px;
+	padding: 16px 20px;
+	border-radius: 16px;
+	font-size: 17px;
+	line-height: 20px;
+	font-weight: 500;
+}
+
+.size_large {
+	height: 60px;
+	min-width: 64px;
+	padding: 18px 22px;
+	border-radius: 20px;
+	font-size: 17px;
+	line-height: 20px;
+	font-weight: 500;
+}
+
+/* Variants */
+.variant_primary {
+	--button-bg: var(--button-primary);
+	--button-bg-hover: var(--button-primary-hover);
+	--button-bg-pressed: var(--button-primary-pressed);
+	--button-fg: var(--text-on-accent);
+}
+
+.variant_secondary {
+	--button-bg: var(--button-secondary);
+	--button-bg-hover: var(--button-secondary-hover);
+	--button-bg-pressed: var(--button-secondary-pressed);
+	--button-fg: var(--text-primary);
+}
+
+.variant_ghost {
+	--button-bg: var(--button-ghost);
+	--button-bg-hover: var(--button-ghost-hover);
+	--button-bg-pressed: var(--button-ghost-pressed);
+	--button-fg: var(--text-primary);
+}
+
+.variant_destructive {
+	--button-bg: var(--button-negative);
+	--button-bg-hover: var(--button-negative-hover);
+	--button-bg-pressed: var(--button-negative-pressed);
+	--button-fg: var(--text-on-accent);
+}
+
+.content {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}

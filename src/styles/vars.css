@@ -1,33 +1,62 @@
 :root {
-	--text: #6b6375;
-	--text-h: #08060d;
-	--bg: #fff;
-	--border: #e5e4e7;
-	--code-bg: #f4f3ec;
-	--accent: #aa3bff;
-	--accent-bg: rgba(170, 59, 255, 0.1);
-	--accent-border: rgba(170, 59, 255, 0.5);
-	--social-bg: rgba(244, 243, 236, 0.5);
-	--shadow:
-		rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+	color-scheme: light dark;
 
-	--sans: system-ui, "Segoe UI", Roboto, sans-serif;
-	--heading: system-ui, "Segoe UI", Roboto, sans-serif;
+	/* Surfaces */
+	--bg-primary: light-dark(#eeeef0, #111113);
+	--bg-elevated: light-dark(#ffffff, #18171a);
+	--bg-muted: light-dark(#ececee, #2a292d);
+
+	/* Text */
+	--text-primary: light-dark(#0c0c0e, #ffffff);
+	--text-secondary: light-dark(#7f7f80, #a9a9aa);
+	--text-on-accent: #ffffff;
+
+	/* Accent */
+	--accent: light-dark(#16a34a, #34c759);
+	--accent-bg: light-dark(#e8f7ee, #24332b);
+
+	/* Buttons */
+	--button-primary: var(--accent);
+	--button-primary-hover: color-mix(in srgb, var(--accent), #fff 30%);
+	--button-primary-pressed: color-mix(in srgb, var(--accent), #000 10%);
+	--button-secondary: var(--bg-muted);
+	--button-secondary-hover: light-dark(
+		color-mix(in srgb, var(--bg-muted), #fff 2%),
+		color-mix(in srgb, var(--bg-muted), #fff 4%)
+	);
+	--button-secondary-pressed: light-dark(
+		color-mix(in srgb, var(--bg-muted), #000 4%),
+		color-mix(in srgb, var(--bg-muted), #000 3%)
+	);
+	--button-ghost: transparent;
+	--button-ghost-hover: color-mix(in srgb, var(--text-primary) 4%, transparent);
+	--button-ghost-pressed: color-mix(
+		in srgb,
+		var(--text-primary) 8%,
+		transparent
+	);
+	--button-negative: light-dark(rgb(255 48 60), rgb(206 66 87));
+	--button-negative-hover: light-dark(rgb(255 75 85), rgb(245 78 103));
+	--button-negative-pressed: light-dark(rgb(240 55 65), rgb(156 50 66));
+
+	/* Lines & tracks */
+	--border: light-dark(#dcdddf, #ffffff1a);
+	--track: light-dark(#dee0e2, #46444a);
+
+	/* Effects */
+	--shadow: 0 8px 24px light-dark(rgba(17, 17, 19, 0.08), rgba(0, 0, 0, 0.45));
+
+	/* Fonts */
+	--font:
+		-apple-system, BlinkMacSystemFont, "Roboto", system-ui, Avenir, Helvetica,
+		Arial, sans-serif;
 	--mono: ui-monospace, Consolas, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-	:root {
-		--text: #9ca3af;
-		--text-h: #f3f4f6;
-		--bg: #16171d;
-		--border: #2e303a;
-		--code-bg: #1f2028;
-		--accent: #c084fc;
-		--accent-bg: rgba(192, 132, 252, 0.15);
-		--accent-border: rgba(192, 132, 252, 0.5);
-		--social-bg: rgba(47, 48, 58, 0.5);
-		--shadow:
-			rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-	}
+:root[data-theme="light"] {
+	color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+	color-scheme: dark;
 }
