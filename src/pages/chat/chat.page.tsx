@@ -1,3 +1,16 @@
+import { BackgroundPattern } from "#/components/BackgroundPattern";
+import { ChatList } from "./chatlist/chatlist";
+import { ChatView } from "./chatview/chatview";
+import Styles from "./сhat.module.css";
+
 export function ChatPage() {
-	return <div>Chat page</div>;
+	return (
+		<>
+			<BackgroundPattern alwaysShow />
+			<div className={Styles.root}>
+				<ChatList />
+				<ChatView />
+			</div>
+		</>
+	);
 }

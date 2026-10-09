@@ -10,7 +10,7 @@
 }
 
 @media (width < 926px) {
-	.layer {
+	.layer:not(.alwaysShow) {
 		display: none;
 	}
 }

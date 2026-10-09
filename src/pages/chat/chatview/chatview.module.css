@@ -1,0 +1,17 @@
+.root {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+}
+
+.inputWrapper {
+	max-width: 708px;
+	width: 100%;
+	padding: 12px 0;
+	margin: auto auto 0;
+}
+
+.messages {
+	height: 100%;
+}

@@ -1,10 +1,10 @@
-import { AuthPage } from "./pages/auth/auth.page";
+import { ChatPage } from "./pages/chat/chat.page";
 import { useSyncSystemTheme } from "./store/theme.store";
 
 function App() {
 	useSyncSystemTheme();
 
-	return <AuthPage />;
+	return <ChatPage />;
 }
 
 export default App;

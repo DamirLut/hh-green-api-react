@@ -1,0 +1,47 @@
+.avatar {
+	position: relative;
+	display: block;
+	flex-shrink: 0;
+	overflow: hidden;
+	border-radius: 50%;
+	container-type: inline-size;
+}
+
+.image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+}
+
+.fallback {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	user-select: none;
+	font-size: 33cqw;
+	font-weight: 600;
+	color: var(--text-on-accent);
+}
+
+.gradient_red {
+	background: linear-gradient(153deg, #ff48b6 0.77%, #ff8a35 93.03%);
+}
+
+.gradient_orange {
+	background: linear-gradient(155deg, #ffc93d 6.6%, #ff832a 84.12%);
+}
+
+.gradient_green {
+	background: linear-gradient(158deg, #14e1d5 6.15%, #03c722 85.68%);
+}
+
+.gradient_blue {
+	background: linear-gradient(157deg, #08d7f3 6.38%, #5398ff 85%);
+}
+
+.gradient_purple {
+	background: linear-gradient(155deg, #bf97ff 6.6%, #526eff 84.12%);
+}

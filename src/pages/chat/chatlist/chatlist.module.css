@@ -1,0 +1,6 @@
+.root {
+	position: relative;
+	flex: none;
+	border-right: 1px solid var(--border);
+	background: var(--bg-elevated);
+}
