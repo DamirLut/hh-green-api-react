@@ -19,3 +19,9 @@
 	background-color: var(--track);
 	outline: none;
 }
+
+@media (width < 926px) {
+	.separator {
+		display: none;
+	}
+}

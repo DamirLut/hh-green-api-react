@@ -1,13 +1,12 @@
-import { useMatch } from "react-router";
 import { useChatsQuery } from "#/hooks/chats.query";
+import { useSelectedChatId } from "../use-selected-chat-id";
 import Styles from "./chatlist.module.css";
 import { ChatItem } from "./subcomponents/chatitem/chatitem";
 import { ChatHeader } from "./subcomponents/header";
 
 export function ChatList() {
 	const chatsQuery = useChatsQuery();
-	const match = useMatch("/:chatId");
-	const selectedChatId = match?.params.chatId;
+	const selectedChatId = useSelectedChatId();
 
 	return (
 		<div className={Styles.root}>

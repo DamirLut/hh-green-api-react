@@ -6,8 +6,34 @@
 .pane {
 	position: relative;
 	flex: none;
+	width: var(--pane-width);
 }
 
 .smooth {
 	transition: width 0.2s ease;
+}
+
+@media (width < 926px) {
+	.root {
+		position: relative;
+		overflow: hidden;
+	}
+
+	.pane {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		z-index: 1;
+		transition: transform 0.25s ease;
+	}
+
+	.root[data-chat-open] .pane {
+		transform: translateX(-100%);
+	}
+}
+
+@media (width < 926px) and (prefers-reduced-motion: reduce) {
+	.pane {
+		transition: none;
+	}
 }
