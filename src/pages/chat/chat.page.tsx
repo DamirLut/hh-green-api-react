@@ -1,7 +1,7 @@
+import { Outlet } from "react-router";
 import { BackgroundPattern } from "#/components/BackgroundPattern";
 
 import { ChatList } from "./chatlist/chatlist";
-import { ChatView } from "./chatview/chatview";
 import { Resizable } from "./resizable";
 
 export function ChatPage() {
@@ -10,7 +10,7 @@ export function ChatPage() {
 			<BackgroundPattern alwaysShow />
 			<Resizable>
 				<ChatList />
-				<ChatView />
+				<Outlet />
 			</Resizable>
 		</>
 	);

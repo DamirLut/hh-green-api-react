@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import pattern from "#/assets/backgrounds/pattern_space.svg?url";
+import pattern from "#/assets/backgrounds/pattern_greenapi.png?url";
 import { cn } from "#/lib/classname";
 import Styles from "./pattern.module.css";
 

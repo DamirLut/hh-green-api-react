@@ -4,7 +4,7 @@
 	/* Surfaces */
 	--bg-primary: light-dark(#eeeef0, #111113);
 	--bg-elevated: light-dark(#ffffff, #18171a);
-	--bg-muted: light-dark(#ececee, #2a292d);
+	--bg-muted: light-dark(#ffffff, #2a292d);
 
 	/* Text */
 	--text-primary: light-dark(#0c0c0e, #ffffff);

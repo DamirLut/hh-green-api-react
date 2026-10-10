@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { Avatar } from "#/components/Avatar";
 import { useChatHistoryQuery, useContactQuery } from "#/hooks/chats.query";
 import { cn } from "#/lib/classname";
@@ -6,16 +7,22 @@ import Styles from "./chatitem.module.css";
 
 interface ChatItemProps {
 	data: GreenApiChat;
+	selected: boolean;
 }
 
-export function ChatItem({ data }: ChatItemProps) {
+export function ChatItem({ data, selected }: ChatItemProps) {
 	const { data: contact } = useContactQuery(data.chatId);
 	const { data: history } = useChatHistoryQuery(data.chatId);
 
 	const lastMessage = history?.at(0);
 
 	return (
-		<div className={Styles.item} title={`chatId: ${data.chatId}`}>
+		<Link
+			className={Styles.item}
+			to={`/${data.chatId}`}
+			data-selected={selected || undefined}
+			title={`chatId: ${data.chatId}`}
+		>
 			<Avatar
 				src={contact?.avatar}
 				alt={contact?.name || "loading"}
@@ -32,6 +39,6 @@ export function ChatItem({ data }: ChatItemProps) {
 					{lastMessage?.isDeleted ? "[Удалено]" : lastMessage?.textMessage}
 				</span>
 			</div>
-		</div>
+		</Link>
 	);
 }

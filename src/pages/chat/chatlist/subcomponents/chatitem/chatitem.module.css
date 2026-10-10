@@ -7,10 +7,16 @@
 	user-select: none;
 	display: flex;
 	gap: 12px;
+	text-decoration: none;
+	color: inherit;
 
 	&:hover {
 		background: var(--bg-muted);
 	}
+}
+
+.item[data-selected] {
+	background: var(--accent-bg);
 }
 
 :global([data-collapsed]) .item {
