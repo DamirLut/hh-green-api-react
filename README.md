@@ -33,3 +33,13 @@ If you are developing a production application, we recommend enabling type-aware
 ```
 
 See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+
+## Mock Green API server
+
+Локальный JSON-сервер, имитирующий Green API (`getAccountSettings`, `getChats`, `getContactInfo`, `getChatHistory`). Данные лежат в `mock/db.json`.
+
+```sh
+bun run mock   # http://localhost:3000
+```
+
+Чтобы приложение ходило в мок вместо реального API, в `.env.development` должна быть строка `VITE_GREEN_API_URL=http://localhost:3000`.

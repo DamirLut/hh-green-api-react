@@ -5,7 +5,15 @@
 	align-items: center;
 }
 
+:global([data-collapsed]) .root {
+	justify-content: center;
+}
+
 .title {
 	font-weight: 600;
 	font-size: 24px;
+}
+
+:global([data-collapsed]) .title {
+	display: none;
 }

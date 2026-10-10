@@ -1,0 +1,46 @@
+.item {
+	padding: 9px 16px;
+	cursor: pointer;
+	background: var(--bg-elevated);
+	width: 100%;
+	min-width: 300px;
+	user-select: none;
+	display: flex;
+	gap: 12px;
+
+	&:hover {
+		background: var(--bg-muted);
+	}
+}
+
+:global([data-collapsed]) .item {
+	padding: 9px;
+	justify-content: center;
+	min-width: 0;
+}
+
+.name {
+	font: 500 15px / 20px;
+}
+
+.info {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	opacity: var(--info-fade, 1);
+}
+
+:global([data-collapsed]) .info {
+	display: none;
+}
+
+.deleted {
+	font-style: italic;
+}
+
+.message {
+	font-size: 14px;
+	line-height: 1;
+	color: var(--text-secondary);
+	text-overflow: ellipsis;
+}

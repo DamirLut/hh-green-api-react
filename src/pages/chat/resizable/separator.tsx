@@ -1,7 +1,14 @@
 import { type KeyboardEvent, type PointerEvent, useState } from "react";
 import { cn } from "#/lib/classname";
 import Styles from "./separator.module.css";
-import { clampWidth, KEYBOARD_STEP, MAX_WIDTH, MIN_WIDTH } from "./utils";
+import {
+	clampWidth,
+	KEYBOARD_STEP,
+	MAX_WIDTH,
+	MIN_WIDTH,
+	snapWidth,
+	stepWidth,
+} from "./utils";
 
 type SeparatorProps = {
 	value: number;
@@ -26,15 +33,19 @@ export function Separator({ value, onResize }: SeparatorProps) {
 	};
 
 	const endDrag = (e: PointerEvent) => {
-		e.currentTarget.releasePointerCapture(e.pointerId);
 		document.body.style.cursor = "";
 		document.body.style.userSelect = "";
 		setIsDragging(false);
+		if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+			e.currentTarget.releasePointerCapture(e.pointerId);
+		}
+		const snapped = snapWidth(value);
+		if (snapped !== value) onResize(snapped);
 	};
 
 	const keyDown = (e: KeyboardEvent) => {
-		if (e.key === "ArrowLeft") onResize(clampWidth(value - KEYBOARD_STEP));
-		if (e.key === "ArrowRight") onResize(clampWidth(value + KEYBOARD_STEP));
+		if (e.key === "ArrowLeft") onResize(stepWidth(value, -KEYBOARD_STEP));
+		if (e.key === "ArrowRight") onResize(stepWidth(value, KEYBOARD_STEP));
 	};
 
 	return (
@@ -51,6 +62,7 @@ export function Separator({ value, onResize }: SeparatorProps) {
 			onPointerMove={moveDrag}
 			onPointerUp={endDrag}
 			onPointerCancel={endDrag}
+			onLostPointerCapture={endDrag}
 		/>
 	);
 }

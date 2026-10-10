@@ -1,0 +1,13 @@
+.root {
+	display: flex;
+	height: 100%;
+}
+
+.pane {
+	position: relative;
+	flex: none;
+}
+
+.smooth {
+	transition: width 0.2s ease;
+}

@@ -1,16 +1,19 @@
-import { useState } from "react";
-import { Separator } from "../separator";
-import { DEFAULT_WIDTH } from "../separator/utils";
+import { useChatsQuery } from "#/hooks/chats.query";
 import Styles from "./chatlist.module.css";
+import { ChatItem } from "./subcomponents/chatitem/chatitem";
 import { ChatHeader } from "./subcomponents/header";
 
 export function ChatList() {
-	const [width, setWidth] = useState(DEFAULT_WIDTH);
+	const chatsQuery = useChatsQuery();
 
 	return (
-		<div className={Styles.root} style={{ width }}>
+		<div className={Styles.root}>
 			<ChatHeader />
-			<Separator value={width} onResize={setWidth} />
+			<div className={Styles.list}>
+				{chatsQuery.data?.map((chat) => (
+					<ChatItem key={chat.chatId} data={chat} />
+				))}
+			</div>
 		</div>
 	);
 }

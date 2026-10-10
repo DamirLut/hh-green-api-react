@@ -4,7 +4,7 @@ import Styles from "./avatar.module.css";
 import { getGradient, getInitials } from "./utils";
 
 export interface AvatarProps extends React.ComponentProps<"div"> {
-	src: string;
+	src?: string;
 	alt: string;
 	size?: number;
 }
