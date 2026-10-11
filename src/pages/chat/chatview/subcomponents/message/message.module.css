@@ -1,0 +1,65 @@
+.message {
+	align-self: flex-start;
+	max-width: 75%;
+	padding: 8px 12px;
+	border-radius: 16px;
+	background: var(--bubble-in);
+}
+
+.outgoing {
+	align-self: flex-end;
+	background: linear-gradient(
+		160deg,
+		var(--bubble-out-from),
+		var(--bubble-out-to)
+	);
+}
+
+.text {
+	margin: 0;
+	font-size: 15px;
+	line-height: 20px;
+	white-space: pre-wrap;
+	text-wrap: pretty;
+	overflow-wrap: break-word;
+}
+
+.time {
+	display: block;
+	margin-top: 2px;
+	font-size: 11px;
+	line-height: 14px;
+	text-align: right;
+	color: var(--text-secondary);
+}
+
+.outgoing .time {
+	color: color-mix(in srgb, var(--text-primary) 45%, transparent);
+}
+
+.revealable {
+	border: none;
+	cursor: pointer;
+	font: inherit;
+	letter-spacing: inherit;
+	text-align: left;
+	transition: filter 0.15s ease;
+}
+
+.revealable:hover {
+	filter: brightness(0.96);
+}
+
+.placeholder {
+	font-style: italic;
+	color: var(--text-secondary);
+}
+
+.deletedMark {
+	font-style: italic;
+	color: var(--text-secondary);
+}
+
+.deletedMark::after {
+	content: " · ";
+}

@@ -1,0 +1,42 @@
+@media (width < 926px) {
+	html[data-nav-direction="forward"]::view-transition-image-pair(root) {
+		isolation: none;
+	}
+
+	html[data-nav-direction="forward"]::view-transition-old(root) {
+		z-index: 2;
+		animation: 0.25s ease both slide-out-left;
+	}
+
+	html[data-nav-direction="forward"]::view-transition-new(root) {
+		z-index: 1;
+		animation: none;
+	}
+
+	html[data-nav-direction="back"]::view-transition-new(root) {
+		animation: 0.25s ease both slide-in-left;
+	}
+
+	html[data-nav-direction="back"]::view-transition-old(root) {
+		animation: none;
+	}
+}
+
+@media (width < 926px) and (prefers-reduced-motion: reduce) {
+	::view-transition-old(root),
+	::view-transition-new(root) {
+		animation: none !important;
+	}
+}
+
+@keyframes slide-out-left {
+	to {
+		transform: translateX(-100%);
+	}
+}
+
+@keyframes slide-in-left {
+	from {
+		transform: translateX(-100%);
+	}
+}

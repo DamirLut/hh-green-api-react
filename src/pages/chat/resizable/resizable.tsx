@@ -1,7 +1,7 @@
 import { Children, type ReactNode, useState } from "react";
+import { useCurrentChatId } from "#/hooks/use-current-chat-id";
 import { useIsMobile } from "#/hooks/use-mobile";
 import { cn } from "#/lib/classname";
-import { useSelectedChatId } from "../use-selected-chat-id";
 import { ResizableContext } from "./context";
 import Styles from "./resizable.module.css";
 import { Separator } from "./separator";
@@ -23,8 +23,8 @@ export function Resizable({ children }: ResizableProps) {
 	};
 
 	const [pane, ...rest] = Children.toArray(children);
-	const chatOpen = useSelectedChatId() !== undefined;
 	const isMobile = useIsMobile();
+	const chatOpen = useCurrentChatId() !== undefined;
 	const collapsed = !isMobile && width <= MIN_WIDTH;
 	const fade = isMobile
 		? 1
@@ -35,7 +35,7 @@ export function Resizable({ children }: ResizableProps) {
 
 	return (
 		<ResizableContext.Provider value={{ width, collapsed }}>
-			<div className={Styles.root} data-chat-open={chatOpen || undefined}>
+			<div className={Styles.root}>
 				<div
 					key={isMobile ? "mobile" : "desktop"}
 					className={cn(Styles.pane, smooth && Styles.smooth)}
@@ -46,6 +46,7 @@ export function Resizable({ children }: ResizableProps) {
 						} as React.CSSProperties
 					}
 					data-collapsed={collapsed || undefined}
+					data-chat-open={chatOpen || undefined}
 					onTransitionEnd={(e) => {
 						if (e.target === e.currentTarget) setSmooth(false);
 					}}

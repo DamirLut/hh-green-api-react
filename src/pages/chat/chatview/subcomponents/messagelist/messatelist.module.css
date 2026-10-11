@@ -1,0 +1,59 @@
+.list {
+	height: 100%;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+}
+
+.inner {
+	margin: auto auto 0;
+	width: 100%;
+	max-width: 708px;
+	padding: 12px 10px;
+
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.skeleton {
+	align-self: flex-start;
+	height: 52px;
+	flex-shrink: 0;
+	border-radius: 16px;
+	background: var(--track);
+}
+
+.skeletonOutgoing {
+	align-self: flex-end;
+	background: var(--accent-bg);
+}
+
+.skeletonTall {
+	height: 72px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.skeleton {
+		animation: pulse 1.2s ease-in-out infinite;
+	}
+
+	.skeleton:nth-child(3n + 1) {
+		animation-delay: 0.15s;
+	}
+
+	.skeleton:nth-child(3n + 2) {
+		animation-delay: 0.3s;
+	}
+}
+
+@keyframes pulse {
+	0%,
+	100% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0.55;
+	}
+}

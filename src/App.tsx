@@ -1,10 +1,23 @@
 import { useState } from "react";
-import { Navigate, Route, Routes } from "react-router";
-import { ApiClientContext, createClientFromEnv } from "#/lib/green-api";
+import { RouterProvider } from "react-router/dom";
+import {
+	ApiClientContext,
+	createClientFromEnv,
+	type GreenApiClient,
+} from "#/lib/green-api";
+import { NotificationsProvider } from "./hooks/use-notifications";
 import { AuthPage } from "./pages/auth/auth.page";
-import { ChatPage } from "./pages/chat/chat.page";
-import { ChatView } from "./pages/chat/chatview/chatview";
+import { router } from "./router";
 import { useSyncSystemTheme } from "./store/theme.store";
+
+function AuthenticatedApp({ client }: { client: GreenApiClient }) {
+	return (
+		<ApiClientContext value={client}>
+			<NotificationsProvider />
+			<RouterProvider router={router} />
+		</ApiClientContext>
+	);
+}
 
 function App() {
 	useSyncSystemTheme();
@@ -13,16 +26,7 @@ function App() {
 
 	if (!client) return <AuthPage />;
 
-	return (
-		<ApiClientContext value={client}>
-			<Routes>
-				<Route path="/" element={<ChatPage />}>
-					<Route path=":chatId" element={<ChatView />} />
-				</Route>
-				<Route path="*" element={<Navigate to="/" replace />} />
-			</Routes>
-		</ApiClientContext>
-	);
+	return <AuthenticatedApp client={client} />;
 }
 
 export default App;

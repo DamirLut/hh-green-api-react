@@ -9,17 +9,11 @@
 	.root {
 		position: absolute;
 		inset: 0;
-		z-index: 0;
+		z-index: 2;
 	}
 }
 
-.inputWrapper {
-	max-width: 708px;
-	width: 100%;
-	padding: 12px 0;
-	margin: auto auto 0;
-}
-
 .messages {
-	height: 100%;
+	flex: 1;
+	min-height: 0;
 }

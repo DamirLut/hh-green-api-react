@@ -127,6 +127,23 @@
 				"chatId": "79001234567",
 				"chatType": "user",
 				"forwardingScore": 0,
+				"idMessage": "3EB0IMAG1791590400",
+				"isDeleted": false,
+				"isEdited": false,
+				"isForwarded": false,
+				"senderContactName": "Анна Смирнова",
+				"senderId": "79001234567",
+				"senderName": "Анна Смирнова",
+				"senderType": "user",
+				"textMessage": "",
+				"timestamp": 1791590400,
+				"type": "incoming",
+				"typeMessage": "imageMessage"
+			},
+			{
+				"chatId": "79001234567",
+				"chatType": "user",
+				"forwardingScore": 0,
 				"idMessage": "3EB0A1B2C3D4E5F6A7B8C9D0",
 				"isDeleted": false,
 				"isEdited": false,
@@ -206,7 +223,7 @@
 				"senderId": "79015552626",
 				"senderName": "Максим Орлов",
 				"senderType": "user",
-				"textMessage": "",
+				"textMessage": "Не в тот чат скинул, забей",
 				"timestamp": 1791583200,
 				"type": "incoming",
 				"typeMessage": "textMessage"
@@ -300,6 +317,23 @@
 			}
 		],
 		"79061112233": [
+			{
+				"chatId": "79061112233",
+				"chatType": "user",
+				"forwardingScore": 0,
+				"idMessage": "3EB0DOCU1791585600",
+				"isDeleted": false,
+				"isEdited": false,
+				"isForwarded": false,
+				"senderContactName": "Елена Ким",
+				"senderId": "79061112233",
+				"senderName": "Елена Ким",
+				"senderType": "user",
+				"textMessage": "",
+				"timestamp": 1791585600,
+				"type": "incoming",
+				"typeMessage": "documentMessage"
+			},
 			{
 				"chatId": "79061112233",
 				"chatType": "user",

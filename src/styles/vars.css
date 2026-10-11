@@ -15,6 +15,17 @@
 	--accent: light-dark(#16a34a, #34c759);
 	--accent-bg: light-dark(#e8f7ee, #24332b);
 
+	/* Message bubbles */
+	--bubble-in: var(--bg-muted);
+	--bubble-out-from: light-dark(
+		color-mix(in srgb, var(--accent) 32%, #ffffff),
+		color-mix(in srgb, var(--accent) 30%, var(--bg-elevated))
+	);
+	--bubble-out-to: light-dark(
+		color-mix(in srgb, var(--accent) 16%, #ffffff),
+		color-mix(in srgb, var(--accent) 18%, var(--bg-elevated))
+	);
+
 	/* Buttons */
 	--button-primary: var(--accent);
 	--button-primary-hover: color-mix(in srgb, var(--accent), #fff 30%);

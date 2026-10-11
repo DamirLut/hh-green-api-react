@@ -4,8 +4,11 @@ import {
 	type GreenApiChat,
 	type GreenApiChatItem,
 	type GreenApiContact,
+	GreenApiError,
 	type GreenApiInstanceConfig,
+	type GreenApiNewNotification,
 	GreenApiRateLimitError,
+	type GreenApiSendMessageParams,
 } from "./types";
 
 export class GreenApiClient {
@@ -35,12 +38,43 @@ export class GreenApiClient {
 		});
 	}
 
+	async sendMessage(params: GreenApiSendMessageParams) {
+		return this.post("sendMessage", params);
+	}
+
+	async receiveNotification(init: RequestInit = {}) {
+		const response = await this.request<GreenApiNewNotification | null>(
+			"receiveNotification",
+			init,
+		).catch((error) => {
+			if (error instanceof GreenApiError && error.status === 408) return null;
+			throw new Error("[GREEN-API] unexpected receiveNotification payload", {
+				cause: error,
+			});
+		});
+		if (response && typeof response === "object" && "receiptId" in response) {
+			return response;
+		}
+		console.warn(
+			"[GREEN-API] unexpected receiveNotification payload",
+			response,
+		);
+		return null;
+	}
+
+	async deleteNotification(receiptId: number, init: RequestInit = {}) {
+		return this.request(
+			"deleteNotification",
+			{
+				method: "DELETE",
+				...init,
+			},
+			`/${receiptId}`,
+		);
+	}
+
 	/// POST alias for request
-	async post<T>(
-		method: string,
-		params: Record<string, unknown> = {},
-		init: RequestInit = {},
-	) {
+	async post<T>(method: string, params: object = {}, init: RequestInit = {}) {
 		return this.request<T>(method, {
 			method: "POST",
 			body: JSON.stringify(params),
@@ -49,9 +83,13 @@ export class GreenApiClient {
 	}
 
 	/// raw api request
-	async request<T>(method: string, init: RequestInit = {}): Promise<T> {
+	async request<T>(
+		method: string,
+		init: RequestInit = {},
+		extendedPath: string = "",
+	): Promise<T> {
 		const url = new URL(
-			`waInstance${this.#config.idInstance}/${method}/${this.#config.apiTokenInstance}`,
+			`waInstance${this.#config.idInstance}/${method}/${this.#config.apiTokenInstance}${extendedPath}`,
 			this.#config.apiUrl,
 		);
 
@@ -73,11 +111,9 @@ export class GreenApiClient {
 		}
 
 		if (!response.ok) {
-			const body = await response.json();
+			const body = await response.json().catch(() => null);
 			console.warn(body);
-			throw new Error(
-				`GreenApiError: ${response.statusText} [${response.status}]`,
-			);
+			throw new GreenApiError(response.status, response.statusText);
 		}
 
 		if (response.status === 204) return undefined as T;

@@ -8,6 +8,16 @@ export class GreenApiRateLimitError extends Error {
 	}
 }
 
+export class GreenApiError extends Error {
+	readonly status: number;
+
+	constructor(status: number, statusText: string) {
+		super(`GreenApiError: ${statusText} [${status}]`);
+		this.name = "GreenApiError";
+		this.status = status;
+	}
+}
+
 export interface GreenApiInstanceConfig {
 	apiUrl: string;
 	mediaUrl: string;
@@ -59,12 +69,37 @@ export interface GreenApiContact {
 	username: string;
 }
 
-export type GreenApiMessageType = "incoming";
-export type GreenApiMessageSubType = "textMessage";
+export type GreenApiMessageType = "incoming" | "outgoing";
+export type GreenApiMessageSubType =
+	| "textMessage"
+	| "imageMessage"
+	| "videoMessage"
+	| "audioMessage"
+	| "documentMessage"
+	| "locationMessage"
+	| "contactMessage"
+	| "extendedTextMessage";
 
-export interface GreenApiChatItem {
+interface GreenApiChatRef {
 	chatId: string;
 	chatType: GreenApiUserType;
+}
+
+interface GreenApiSender {
+	senderContactName: string;
+	senderName: string;
+	senderType: GreenApiUserType;
+}
+
+interface GreenApiMessageData {
+	textMessage: string;
+	typeMessage: GreenApiMessageSubType;
+}
+
+export interface GreenApiChatItem
+	extends GreenApiChatRef,
+		GreenApiSender,
+		GreenApiMessageData {
 	deletedMessageId?: string;
 	editedMessageId?: string;
 	forwardingScore: number;
@@ -72,12 +107,37 @@ export interface GreenApiChatItem {
 	isDeleted: boolean;
 	isEdited: boolean;
 	isForwarded: boolean;
-	senderContactName: string;
 	senderId: string;
-	senderName: string;
-	senderType: GreenApiUserType;
-	textMessage: string;
 	timestamp: number;
 	type: GreenApiMessageType;
-	typeMessage: GreenApiMessageSubType;
+}
+
+export interface GreenApiSendMessageParams {
+	chatId: string;
+	message: string;
+	typingTime?: number;
+	quotedMessageId?: string;
+}
+
+export type GreenApiWebhookType = "incomingMessageReceived";
+
+export interface GreenApiNewNotification {
+	receiptId: number;
+	body: {
+		typeWebhook: GreenApiWebhookType;
+		instanceData: {
+			idInstance: number;
+			wid: string;
+			typeInstance: string;
+		};
+		timestamp: number;
+		idMessage: string;
+		senderData: GreenApiChatRef &
+			GreenApiSender & {
+				chatName: string;
+				sender: string;
+				senderPhoneNumber: number;
+			};
+		messageData: GreenApiMessageData;
+	};
 }

@@ -6,6 +6,8 @@ export const GREEN_API_RATE_LIMIT_TABLE: Record<string, number> = {
 	getChats: 1,
 	getContactInfo: 1,
 	getChatHistory: 1,
+	receiveNotification: 1,
+	deleteNotification: 1,
 };
 
 const DEFAULT_API_URL = "https://4100.api.green-api.com";

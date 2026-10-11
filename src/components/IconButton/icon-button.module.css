@@ -5,8 +5,8 @@
 	position: relative;
 	border: 0;
 	padding: 0;
-	color: var(--text-primary);
-	background-color: transparent;
+	color: var(--icon-button-fg);
+	background-color: var(--icon-button-bg);
 	cursor: pointer;
 	-webkit-tap-highlight-color: transparent;
 }
@@ -18,12 +18,12 @@
 
 @media (hover: hover) and (pointer: fine) {
 	.iconButton:hover:not(:disabled) {
-		background-color: var(--button-ghost-hover);
+		background-color: var(--icon-button-bg-hover);
 	}
 }
 
 .iconButton:active:not(:disabled) {
-	background-color: var(--button-ghost-pressed);
+	background-color: var(--icon-button-bg-pressed);
 }
 
 /* Sizes */
@@ -49,6 +49,21 @@
 	width: 60px;
 	height: 60px;
 	border-radius: 45%;
+}
+
+/* Variants */
+.variant_ghost {
+	--icon-button-bg: transparent;
+	--icon-button-bg-hover: var(--button-ghost-hover);
+	--icon-button-bg-pressed: var(--button-ghost-pressed);
+	--icon-button-fg: var(--text-primary);
+}
+
+.variant_primary {
+	--icon-button-bg: var(--button-primary);
+	--icon-button-bg-hover: var(--button-primary-hover);
+	--icon-button-bg-pressed: var(--button-primary-pressed);
+	--icon-button-fg: var(--text-on-accent);
 }
 
 .content {

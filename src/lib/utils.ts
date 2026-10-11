@@ -9,6 +9,10 @@ const dateFormat = new Intl.DateTimeFormat("ru-RU", {
 	year: "numeric",
 });
 
+export function formatTime(timestampSeconds: number): string {
+	return timeFormat.format(new Date(timestampSeconds * 1000));
+}
+
 export function formatLastSeen(timestampSeconds: number): string {
 	const date = new Date(timestampSeconds * 1000);
 	const dayStart = (d: Date) =>
@@ -18,4 +22,18 @@ export function formatLastSeen(timestampSeconds: number): string {
 	if (days === 0) return `был(а) в ${timeFormat.format(date)}`;
 	if (days === 1) return `был(а) вчера в ${timeFormat.format(date)}`;
 	return `был(а) ${dateFormat.format(date)}`;
+}
+
+export function sleepWithSignal(ms: number, signal: AbortSignal) {
+	return new Promise<void>((resolve, reject) => {
+		const timer = setTimeout(resolve, ms);
+		signal.addEventListener(
+			"abort",
+			() => {
+				clearTimeout(timer);
+				reject(signal.reason);
+			},
+			{ once: true },
+		);
+	});
 }
