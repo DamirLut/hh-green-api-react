@@ -1,0 +1,10 @@
+.root {
+	padding: 12px;
+	display: flex;
+	justify-content: flex-end;
+	border-top: 1px solid var(--border);
+}
+
+:global([data-collapsed]) .root {
+	justify-content: center;
+}

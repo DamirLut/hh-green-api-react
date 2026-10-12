@@ -55,10 +55,13 @@ export class GreenApiClient {
 		if (response && typeof response === "object" && "receiptId" in response) {
 			return response;
 		}
-		console.warn(
-			"[GREEN-API] unexpected receiveNotification payload",
-			response,
-		);
+		if (response !== null) {
+			console.warn(
+				"[GREEN-API] unexpected receiveNotification payload",
+				typeof response,
+				response,
+			);
+		}
 		return null;
 	}
 

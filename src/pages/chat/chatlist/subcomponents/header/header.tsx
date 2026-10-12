@@ -1,12 +1,11 @@
-import { IconMoon, IconSun } from "#/assets/icons";
+import { IconPlus } from "#/assets/icons";
 import { IconButton } from "#/components/IconButton";
-import { useTheme } from "#/store/theme.store";
+import { useModal } from "#/store/modal.store";
 import Styles from "./header.module.css";
+import { NewChatModal } from "../new-chat-modal";
 
 export function ChatHeader() {
-	const { theme, setPreference } = useTheme();
-
-	const Icon = theme === "dark" ? IconMoon : IconSun;
+	const openModal = useModal((state) => state.openModal);
 
 	return (
 		<div className={Styles.root}>
@@ -14,11 +13,11 @@ export function ChatHeader() {
 
 			<IconButton
 				size="small"
-				onClick={() => {
-					setPreference(theme === "dark" ? "light" : "dark");
-				}}
+				variant="primary"
+				aria-label="Новый чат"
+				onClick={() => openModal(<NewChatModal />)}
 			>
-				<Icon />
+				<IconPlus />
 			</IconButton>
 		</div>
 	);

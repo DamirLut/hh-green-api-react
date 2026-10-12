@@ -2,6 +2,7 @@ import { useChatList } from "#/hooks/chats.query";
 import { useCurrentChatId } from "#/hooks/use-current-chat-id";
 import Styles from "./chatlist.module.css";
 import { ChatItem } from "./subcomponents/chatitem/chatitem";
+import { ChatFooter } from "./subcomponents/footer";
 import { ChatHeader } from "./subcomponents/header";
 
 export function ChatList() {
@@ -20,6 +21,7 @@ export function ChatList() {
 					/>
 				))}
 			</div>
+			<ChatFooter />
 		</div>
 	);
 }
