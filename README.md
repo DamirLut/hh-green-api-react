@@ -1,45 +1,84 @@
-# React + TypeScript + Vite
+# Тестовое для green-api на react разработчик
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Минимальный веб-мессенджер поверх [Green API](https://green-api.com): вход по креденшелам инстанса, список чатов, история переписки, отправка сообщений и приём входящих.
 
-Currently, two official plugins are available:
+## Стек
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 19** + **React Compiler** (babel preset в Vite)
+- **TypeScript**
+- **Vite 8** (rolldown), CSS Modules — без UI-библиотек
+- **react-router 8** — data router
+- **@tanstack/react-query 5** — api состояние
+- **zustand** — клиентское состояние (auth, тема, модалки)
+- **oxlint** — линтер
+- **Bun** — mock-сервер Green API
 
-## React Compiler
+## Как запустить
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+### Приложение (Vite)
 
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
-
-## Mock Green API server
-
-Локальный JSON-сервер, имитирующий Green API (`getAccountSettings`, `getChats`, `getContactInfo`, `getChatHistory`). Данные лежат в `mock/db.json`.
+Node ≥ 20 или Bun; пакетный менеджер любой — npm / yarn / pnpm / bun:
 
 ```sh
-bun run mock   # http://localhost:3000
+npm install
+npm run dev        # http://localhost:5173
 ```
 
-Чтобы приложение ходило в мок вместо реального API, в `.env.development` должна быть строка `VITE_GREEN_API_URL=http://localhost:3000`.
+### Mock Green API
+
+Требуется [Bun](https://bun.sh) (`Bun.serve`, без зависимостей):
+
+```sh
+bun run mock       # http://localhost:3000
+```
+
+### Вход без авторизации
+
+Чтобы при разработке не вводить `idInstance` и `apiTokenInstance` каждый раз, скопируйте `.example.env` в `.env` и заполните значения:
+
+```sh
+cp .example.env .env
+```
+
+```env
+VITE_GREEN_API_ID_INSTANCE=41002...
+VITE_GREEN_API_TOKEN_INSTANCE=85f0...
+```
+
+Если переменные заданы, приложение при старте сразу открывает список чатов, минуя форму авторизации. Для мока подойдут любые непустые значения; для реального инстанса — настоящие креденшелы.
+
+### Mock-сервер
+
+Эмулирует Green API (`getAccountSettings`, `getChats`, `getContactInfo`, `getChatHistory`, `checkAccount`, `sendMessage`, `receiveNotification` long-poll, `deleteNotification`), состояние — в `mock/db.json`.
+
+- на каждое отправленное сообщение через ~1 секунду приходит автоответ `pong: <текст>`;
+- входящее можно инжектить вручную:
+
+```sh
+curl -X POST http://localhost:3000/test/incoming \
+  -H 'Content-Type: application/json' \
+  -d '{"chatId":"79001234567","text":"привет"}'
+```
+
+- номера, «находящиеся» через `checkAccount` (создают новый чат): `79017773344`, `79024445566`.
+
+
+## Архитектура
+
+```
+src/
+├── lib/green-api/     # слой API
+│   ├── client.ts      #   GreenApiClient: типизированные методы, 429/rate-limit обработка
+│   ├── config.ts      #   env, таблица лимитов методов, instanceApiUrl()
+│   ├── types.ts       #   типы webhook/response
+│   ├── query.ts       #   ключи квери и queryOptions-фабрики
+│   └── client-context.ts  # ApiClientContext + useApiClient()
+├── hooks/             # use-notifications (long-poll цикл), чат-квери, use-mobile, use-current-chat-id
+├── store/             # zustand: auth (инстанс GreenApiClient), theme, modal
+├── components/        # UI-примитивы: Avatar, Button, Input, Dialog, ModalHost, Spinner, …
+├── pages/
+│   ├── auth/          # AuthPage — форма входа, валидация getAccountSettings
+│   └── chat/          # ChatPage: chatlist (header/footer, ChatItem, new-chat-modal)
+│                      #   + chatview (Topbar, MessageList, ChatInput), resizable-сплит
+└── styles/            # дизайн-токены (vars.css), global, view-transition
+```
