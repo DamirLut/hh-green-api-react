@@ -1,10 +1,9 @@
-import { useState } from "react";
 import { RouterProvider } from "react-router/dom";
 import {
 	ApiClientContext,
-	createClientFromEnv,
 	type GreenApiClient,
 } from "#/lib/green-api";
+import { useAuth } from "#/store/auth.store";
 import { NotificationsProvider } from "./hooks/use-notifications";
 import { AuthPage } from "./pages/auth/auth.page";
 import { router } from "./router";
@@ -22,7 +21,7 @@ function AuthenticatedApp({ client }: { client: GreenApiClient }) {
 function App() {
 	useSyncSystemTheme();
 
-	const [client] = useState(createClientFromEnv);
+	const client = useAuth((state) => state.client);
 
 	if (!client) return <AuthPage />;
 

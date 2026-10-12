@@ -13,6 +13,10 @@ export const GREEN_API_RATE_LIMIT_TABLE: Record<string, number> = {
 
 const DEFAULT_API_URL = "https://4100.api.green-api.com";
 
+export function instanceApiUrl(idInstance: string): string {
+	return `https://${idInstance.slice(0, 4)}.api.green-api.com`;
+}
+
 export function createClientFromEnv(): GreenApiClient | null {
 	const idInstance = import.meta.env.VITE_GREEN_API_ID_INSTANCE;
 	const apiTokenInstance = import.meta.env.VITE_GREEN_API_TOKEN_INSTANCE;
