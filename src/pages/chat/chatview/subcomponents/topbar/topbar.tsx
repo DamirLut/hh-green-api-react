@@ -5,7 +5,7 @@ import { IconButton } from "#/components/IconButton";
 import { useRequiredChatId } from "#/hooks/use-current-chat-id";
 import { useChatsQuery, useContactQuery } from "#/hooks/chats.query";
 import { useIsMobile } from "#/hooks/use-mobile";
-import { formatLastSeen } from "#/lib/utils";
+import { formatLastSeen, setNavDirection } from "#/lib/utils";
 import Styles from "./topbar.module.css";
 
 export function Topbar() {
@@ -19,7 +19,7 @@ export function Topbar() {
 	const name = contact?.name || chat?.name || "loading";
 
 	const back = () => {
-		document.documentElement.dataset.navDirection = "back";
+		setNavDirection("back");
 		navigate("/", { viewTransition: isMobile });
 	};
 

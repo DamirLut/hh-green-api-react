@@ -24,6 +24,10 @@ export function formatLastSeen(timestampSeconds: number): string {
 	return `был(а) ${dateFormat.format(date)}`;
 }
 
+export function setNavDirection(direction: "forward" | "back") {
+	document.documentElement.dataset.navDirection = direction;
+}
+
 export function sleepWithSignal(ms: number, signal: AbortSignal) {
 	return new Promise<void>((resolve, reject) => {
 		const timer = setTimeout(resolve, ms);

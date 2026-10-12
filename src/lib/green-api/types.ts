@@ -141,3 +141,9 @@ export interface GreenApiNewNotification {
 		messageData: GreenApiMessageData;
 	};
 }
+
+export interface GreenApiCheckAccountResponse {
+	exist: boolean;
+	chatId: string;
+	fromCache: boolean;
+}

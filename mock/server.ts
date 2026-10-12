@@ -6,9 +6,15 @@ import type {
 	GreenApiNewNotification,
 } from "../src/lib/green-api/types.ts";
 
+interface FindableContact {
+	name: string;
+	username: string;
+}
+
 interface Db {
 	account: GreenApiAccountSettings;
 	chats: GreenApiChat[];
+	findable: Record<string, FindableContact>;
 	contacts: Record<string, GreenApiContact>;
 	messages: Record<string, GreenApiChatItem[]>;
 }
@@ -22,6 +28,39 @@ const AUTO_REPLY_DELAY_MS = 1_000;
 
 const notificationQueue: GreenApiNewNotification[] = [];
 let nextReceiptId = 1;
+
+function checkAccount(phoneNumber: string) {
+	const chatId = phoneNumber.replace(/\D/g, "");
+	if (db.contacts[chatId]) return { exist: true, chatId, fromCache: true };
+
+	const found = db.findable[chatId];
+	if (!found) return { exist: false, chatId, fromCache: false };
+
+	// register the contact and chat so getContactInfo/getChats start returning them
+	db.contacts[chatId] = {
+		avatar: "",
+		chatId,
+		chatType: "user",
+		contactName: found.name,
+		description: "",
+		isPremium: false,
+		isScam: false,
+		isVerified: false,
+		lastSeen: Math.floor(Date.now() / 1000),
+		name: found.name,
+		phoneNumber: Number(chatId),
+		phoneNumberTimestamp: new Date().toISOString(),
+		username: found.username,
+	};
+	db.chats.push({
+		chatId,
+		name: found.name,
+		phoneNumber: Number(chatId),
+		type: "user",
+		username: found.username,
+	});
+	return { exist: true, chatId, fromCache: false };
+}
 
 function simulateIncomingMessage(
 	chatId: string,
@@ -126,6 +165,10 @@ Bun.serve({
 		switch (method) {
 			case "getAccountSettings":
 				return json(db.account);
+			case "checkAccount": {
+				const phoneNumber = String(params.phoneNumber ?? "");
+				return json(checkAccount(phoneNumber));
+			}
 			case "getChats":
 				return json(db.chats);
 			case "getContactInfo": {

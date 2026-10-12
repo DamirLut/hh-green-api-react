@@ -15,6 +15,9 @@
 	--accent: light-dark(#16a34a, #34c759);
 	--accent-bg: light-dark(#e8f7ee, #24332b);
 
+	/* Status */
+	--danger: light-dark(rgb(255 48 60), rgb(255 105 120));
+
 	/* Message bubbles */
 	--bubble-in: var(--bg-muted);
 	--bubble-out-from: light-dark(

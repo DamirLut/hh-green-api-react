@@ -9,6 +9,7 @@ import {
 import { useCallback } from "react";
 import {
 	createOptimisticMessage,
+	type GreenApiChat,
 	type GreenApiChatItem,
 	type GreenApiClient,
 	useApiClient,
@@ -67,6 +68,38 @@ export function useContactQuery(chatId: string) {
 	return useQuery({
 		queryKey: ["green-api", "contact", chatId],
 		queryFn: () => api.getContactInfo(chatId),
+	});
+}
+
+export function useCheckAccountMutation() {
+	const api = useApiClient();
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async (phoneNumber: string) => {
+			const account = await api.checkAccount(phoneNumber);
+			if (!account.exist) return null;
+			const contact = await queryClient.query({
+				queryKey: ["green-api", "contact", account.chatId],
+				queryFn: () => api.getContactInfo(account.chatId),
+			});
+			return { chatId: account.chatId, contact };
+		},
+		onSuccess: (result) => {
+			if (!result) return;
+			const { chatId, contact } = result;
+			queryClient.setQueryData<GreenApiChat[]>(["green-api", "chats"], (chats) => {
+				if (chats?.some((chat) => chat.chatId === chatId)) return chats;
+				const chat: GreenApiChat = {
+					chatId,
+					name: contact.name || contact.contactName || chatId,
+					phoneNumber: contact.phoneNumber || Number(chatId),
+					type: "user",
+					username: contact.username,
+				};
+				return [chat, ...(chats ?? [])];
+			});
+		},
 	});
 }
 

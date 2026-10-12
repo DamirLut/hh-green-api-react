@@ -3,6 +3,7 @@ import {
 	type GreenApiAccountSettings,
 	type GreenApiChat,
 	type GreenApiChatItem,
+	type GreenApiCheckAccountResponse,
 	type GreenApiContact,
 	GreenApiError,
 	type GreenApiInstanceConfig,
@@ -74,6 +75,13 @@ export class GreenApiClient {
 			},
 			`/${receiptId}`,
 		);
+	}
+
+	async checkAccount(phoneNumber: string, force = false) {
+		return this.post<GreenApiCheckAccountResponse>("checkAccount", {
+			phoneNumber: Number(phoneNumber),
+			force,
+		});
 	}
 
 	/// POST alias for request

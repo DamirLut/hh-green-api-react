@@ -6,6 +6,7 @@ export const GREEN_API_RATE_LIMIT_TABLE: Record<string, number> = {
 	getChats: 1,
 	getContactInfo: 1,
 	getChatHistory: 1,
+	checkAccount: 1,
 	receiveNotification: 1,
 	deleteNotification: 1,
 };

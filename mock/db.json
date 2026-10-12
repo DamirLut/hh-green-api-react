@@ -44,6 +44,16 @@
 			"username": "dmitry_volkov"
 		}
 	],
+	"findable": {
+		"79017773344": {
+			"name": "Сергей Петров",
+			"username": "sergey_petrov"
+		},
+		"79024445566": {
+			"name": "Ольга Белова",
+			"username": "olga_belova"
+		}
+	},
 	"contacts": {
 		"79001234567": {
 			"avatar": "",

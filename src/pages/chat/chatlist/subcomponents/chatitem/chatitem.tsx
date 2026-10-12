@@ -4,6 +4,7 @@ import { useIsMobile } from "#/hooks/use-mobile";
 import { useChatHistoryQuery, useContactQuery } from "#/hooks/chats.query";
 import { cn } from "#/lib/classname";
 import { formatMessage, type GreenApiChat } from "#/lib/green-api";
+import { setNavDirection } from "#/lib/utils";
 import Styles from "./chatitem.module.css";
 
 interface ChatItemProps {
@@ -26,9 +27,7 @@ export function ChatItem({ data, selected }: ChatItemProps) {
 			className={Styles.item}
 			to={`/${data.chatId}`}
 			viewTransition={isMobile || undefined}
-			onClick={() => {
-				document.documentElement.dataset.navDirection = "forward";
-			}}
+			onClick={() => setNavDirection("forward")}
 			data-selected={selected || undefined}
 			title={JSON.stringify(data, null, 1)}
 		>
