@@ -84,3 +84,22 @@ src/
 │                      #   + chatview (Topbar, MessageList, ChatInput), resizable-сплит
 └── styles/            # дизайн-токены (vars.css), global, view-transition
 ```
+
+## Скриншоты
+
+### Десктоп
+
+![Форма авторизации](.github/assets/page_auth.png)
+
+| Тёмная тема | Светлая тема |
+| --- | --- |
+| ![Чат — тёмная тема](.github/assets/page_chat.png) | ![Чат — светлая тема](.github/assets/page_chat_light.png) |
+
+![Поиск контакта по номеру телефона](.github/assets/page_add_chat.png)
+
+### Мобильные
+
+| Список чатов | Переписка |
+| --- | --- |
+| ![Список чатов](.github/assets/page_mobile_list.png) | ![Чат — тёмная тема](.github/assets/page_mobile_chat.png) |
+| ![Чат — светлая тема](.github/assets/page_mobile_chat_light.png) | ![Поиск контакта](.github/assets/page_add_chat_mobile.png) |
