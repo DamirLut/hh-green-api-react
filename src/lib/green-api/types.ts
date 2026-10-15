@@ -96,6 +96,19 @@ interface GreenApiMessageData {
 	typeMessage: GreenApiMessageSubType;
 }
 
+type GreenApiWebhookMessageData =
+	| {
+			typeMessage: "textMessage";
+			textMessageData: {
+				textMessage: string;
+				forwardingScore: number;
+				isForwarded: boolean;
+			};
+	  }
+	| {
+			typeMessage: Exclude<GreenApiMessageSubType, "textMessage">;
+	  };
+
 export interface GreenApiChatItem
 	extends GreenApiChatRef,
 		GreenApiSender,
@@ -119,7 +132,16 @@ export interface GreenApiSendMessageParams {
 	quotedMessageId?: string;
 }
 
-export type GreenApiWebhookType = "incomingMessageReceived";
+export interface GreenApiSendMessageResponse {
+	idMessage: string;
+}
+
+export type GreenApiMessageWebhookType =
+	| "incomingMessageReceived"
+	| "outgoingMessageReceived"
+	| "outgoingAPIMessageReceived";
+
+export type GreenApiWebhookType = GreenApiMessageWebhookType;
 
 export interface GreenApiNewNotification {
 	receiptId: number;
@@ -138,7 +160,7 @@ export interface GreenApiNewNotification {
 				sender: string;
 				senderPhoneNumber: number;
 			};
-		messageData: GreenApiMessageData;
+		messageData: GreenApiWebhookMessageData;
 	};
 }
 

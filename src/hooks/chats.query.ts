@@ -21,6 +21,7 @@ export function chatHistoryQuery(api: GreenApiClient, chatId: string) {
 	return queryOptions({
 		queryKey: ["green-api", "history", chatId],
 		queryFn: () => api.getChatHistory(chatId, HISTORY_LIMIT),
+		staleTime: Number.POSITIVE_INFINITY,
 	});
 }
 
@@ -88,17 +89,20 @@ export function useCheckAccountMutation() {
 		onSuccess: (result) => {
 			if (!result) return;
 			const { chatId, contact } = result;
-			queryClient.setQueryData<GreenApiChat[]>(["green-api", "chats"], (chats) => {
-				if (chats?.some((chat) => chat.chatId === chatId)) return chats;
-				const chat: GreenApiChat = {
-					chatId,
-					name: contact.name || contact.contactName || chatId,
-					phoneNumber: contact.phoneNumber || Number(chatId),
-					type: "user",
-					username: contact.username,
-				};
-				return [chat, ...(chats ?? [])];
-			});
+			queryClient.setQueryData<GreenApiChat[]>(
+				["green-api", "chats"],
+				(chats) => {
+					if (chats?.some((chat) => chat.chatId === chatId)) return chats;
+					const chat: GreenApiChat = {
+						chatId,
+						name: contact.name || contact.contactName || chatId,
+						phoneNumber: contact.phoneNumber || Number(chatId),
+						type: "user",
+						username: contact.username,
+					};
+					return [chat, ...(chats ?? [])];
+				},
+			);
 		},
 	});
 }
@@ -125,14 +129,19 @@ export function useSendMessageMutation(chatId: string) {
 				messages ? [optimistic, ...messages] : messages,
 			);
 
-			return { previous };
+			return { previous, optimistic };
 		},
 		onError: (_error, _message, context) => {
 			queryClient.setQueryData(historyKey, context?.previous);
 		},
-		onSuccess: () => {
-			void queryClient.invalidateQueries({ queryKey: historyKey });
-			void queryClient.invalidateQueries({ queryKey: ["green-api", "chats"] });
+		onSuccess: (response, _message, context) => {
+			queryClient.setQueryData<GreenApiChatItem[]>(historyKey, (messages) =>
+				messages?.map((item) =>
+					item.idMessage === context.optimistic.idMessage
+						? { ...item, idMessage: response.idMessage }
+						: item,
+				),
+			);
 		},
 	});
 }

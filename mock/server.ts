@@ -111,11 +111,57 @@ function simulateIncomingMessage(
 				senderPhoneNumber: contact?.phoneNumber ?? 0,
 				senderType: "user",
 			},
-			messageData: { textMessage: text, typeMessage: "textMessage" },
+			messageData: {
+				typeMessage: "textMessage",
+				textMessageData: {
+					textMessage: text,
+					forwardingScore: 0,
+					isForwarded: false,
+				},
+			},
 		},
 	};
 	notificationQueue.push(notification);
 	return notification;
+}
+
+function simulateOutgoingApiMessage(
+	chatId: string,
+	idMessage: string,
+	text: string,
+	timestamp: number,
+) {
+	notificationQueue.push({
+		receiptId: nextReceiptId++,
+		body: {
+			typeWebhook: "outgoingAPIMessageReceived",
+			instanceData: {
+				idInstance: 0,
+				wid: db.account.chatId ?? String(db.account.phone),
+				typeInstance: "whatsapp",
+			},
+			timestamp,
+			idMessage,
+			senderData: {
+				chatId,
+				chatType: "user",
+				chatName: chatId,
+				sender: db.account.chatId ?? String(db.account.phone),
+				senderContactName: "",
+				senderName: db.account.username,
+				senderPhoneNumber: 0,
+				senderType: "user",
+			},
+			messageData: {
+				typeMessage: "textMessage",
+				textMessageData: {
+					textMessage: text,
+					forwardingScore: 0,
+					isForwarded: false,
+				},
+			},
+		},
+	});
 }
 
 const corsHeaders = {
@@ -204,6 +250,12 @@ Bun.serve({
 					type: "outgoing",
 					typeMessage: "textMessage",
 				});
+				simulateOutgoingApiMessage(
+					chatId,
+					idMessage,
+					text,
+					Math.floor(Date.now() / 1000),
+				);
 				setTimeout(
 					() => simulateIncomingMessage(chatId, `pong: ${text}`),
 					AUTO_REPLY_DELAY_MS,

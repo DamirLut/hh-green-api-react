@@ -4,24 +4,37 @@ import {
 	backoffDelayMs,
 	type GreenApiChatItem,
 	type GreenApiClient,
+	type GreenApiMessageWebhookType,
 	GreenApiRateLimitError,
 	notificationToChatItem,
 	useApiClient,
 } from "#/lib/green-api";
 import { sleepWithSignal } from "#/lib/utils";
 
-function applyIncomingMessage(
-	queryClient: QueryClient,
-	message: GreenApiChatItem,
-) {
+const messageWebhookTypes: ReadonlySet<GreenApiMessageWebhookType> = new Set([
+	"incomingMessageReceived",
+	"outgoingMessageReceived",
+	"outgoingAPIMessageReceived",
+]);
+
+function applyMessage(queryClient: QueryClient, message: GreenApiChatItem) {
 	queryClient.setQueryData<GreenApiChatItem[]>(
 		["green-api", "history", message.chatId],
 		(messages) => {
-			if (
-				!messages ||
-				messages.some((item) => item.idMessage === message.idMessage)
-			) {
+			if (!messages) return messages;
+			if (messages.some((item) => item.idMessage === message.idMessage)) {
 				return messages;
+			}
+			const optimisticIndex = messages.findLastIndex(
+				(item) =>
+					item.type === "outgoing" &&
+					item.senderId === "" &&
+					item.textMessage === message.textMessage,
+			);
+			if (optimisticIndex !== -1) {
+				const confirmed = [...messages];
+				confirmed[optimisticIndex] = message;
+				return confirmed;
 			}
 			return [message, ...messages];
 		},
@@ -40,11 +53,8 @@ async function pollNotifications(
 			const notification = await api.receiveNotification({ signal });
 
 			if (notification) {
-				if (notification.body.typeWebhook === "incomingMessageReceived") {
-					applyIncomingMessage(
-						queryClient,
-						notificationToChatItem(notification.body),
-					);
+				if (messageWebhookTypes.has(notification.body.typeWebhook)) {
+					applyMessage(queryClient, notificationToChatItem(notification.body));
 				}
 				await api.deleteNotification(notification.receiptId, { signal });
 			}

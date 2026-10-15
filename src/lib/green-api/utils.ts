@@ -1,7 +1,16 @@
+import type {
+	GreenApiChatItem,
+	GreenApiMessageWebhookType,
+	GreenApiNewNotification,
+} from "./types";
 import { GreenApiRateLimitError } from "./types";
-import type { GreenApiChatItem, GreenApiNewNotification } from "./types";
 
 export const MAX_BACKOFF_MS = 30_000;
+
+const outgoingWebhookTypes: ReadonlySet<GreenApiMessageWebhookType> = new Set([
+	"outgoingMessageReceived",
+	"outgoingAPIMessageReceived",
+]);
 
 export function backoffDelayMs(failureCount: number, error: unknown): number {
 	return error instanceof GreenApiRateLimitError
@@ -18,6 +27,7 @@ export function formatMessage(msg: GreenApiChatItem): string {
 export function notificationToChatItem(
 	body: GreenApiNewNotification["body"],
 ): GreenApiChatItem {
+	const { messageData } = body;
 	return {
 		chatId: body.senderData.chatId,
 		chatType: body.senderData.chatType,
@@ -30,10 +40,13 @@ export function notificationToChatItem(
 		senderId: body.senderData.sender,
 		senderName: body.senderData.senderName,
 		senderType: body.senderData.senderType,
-		textMessage: body.messageData.textMessage,
+		textMessage:
+			messageData.typeMessage === "textMessage"
+				? messageData.textMessageData.textMessage
+				: "",
 		timestamp: body.timestamp,
-		type: "incoming",
-		typeMessage: body.messageData.typeMessage,
+		type: outgoingWebhookTypes.has(body.typeWebhook) ? "outgoing" : "incoming",
+		typeMessage: messageData.typeMessage,
 	};
 }
 

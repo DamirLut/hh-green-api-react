@@ -10,6 +10,7 @@ import {
 	type GreenApiNewNotification,
 	GreenApiRateLimitError,
 	type GreenApiSendMessageParams,
+	type GreenApiSendMessageResponse,
 } from "./types";
 
 export class GreenApiClient {
@@ -40,7 +41,7 @@ export class GreenApiClient {
 	}
 
 	async sendMessage(params: GreenApiSendMessageParams) {
-		return this.post("sendMessage", params);
+		return this.post<GreenApiSendMessageResponse>("sendMessage", params);
 	}
 
 	async receiveNotification(init: RequestInit = {}) {

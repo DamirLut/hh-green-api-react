@@ -3,10 +3,12 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	min-width: 300px;
 }
 
 :global([data-collapsed]) .root {
 	justify-content: center;
+	min-width: 0;
 }
 
 .title {
