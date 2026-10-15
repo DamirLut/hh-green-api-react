@@ -2,6 +2,8 @@
 
 Минимальный веб-мессенджер поверх [Green API](https://green-api.com): вход по креденшелам инстанса, список чатов, история переписки, отправка сообщений и приём входящих.
 
+Live Demo: https://hh-green-api-react.damirlut.dev
+
 ## Стек
 
 - **React 19** + **React Compiler** (babel preset в Vite)
