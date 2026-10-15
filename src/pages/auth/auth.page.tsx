@@ -82,6 +82,7 @@ export function AuthPage() {
 							value={apiTokenInstance}
 							disabled={pending}
 							onChange={(event) => setApiTokenInstance(event.target.value)}
+							type="password"
 						/>
 						<Input
 							label="apiUrl"
