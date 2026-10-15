@@ -17,6 +17,31 @@
 	overflow-x: hidden;
 }
 
+.empty {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 16px;
+	text-align: center;
+	user-select: none;
+}
+
+:global([data-collapsed]) .empty {
+	display: none;
+}
+
+.emptyTitle {
+	font: 500 15px / 20px;
+	color: var(--text-primary);
+}
+
+.emptyHint {
+	font-size: 14px;
+	line-height: 20px;
+	color: var(--text-secondary);
+}
+
 @media (width < 926px) {
 	.root {
 		border-right: none;

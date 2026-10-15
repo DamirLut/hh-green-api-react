@@ -13,13 +13,22 @@ export function ChatList() {
 		<div className={Styles.root}>
 			<ChatHeader />
 			<div className={Styles.list}>
-				{chats.map((chat) => (
-					<ChatItem
-						key={chat.chatId}
-						data={chat}
-						selected={chat.chatId === currentChatId}
-					/>
-				))}
+				{chats.length > 0 ? (
+					chats.map((chat) => (
+						<ChatItem
+							key={chat.chatId}
+							data={chat}
+							selected={chat.chatId === currentChatId}
+						/>
+					))
+					) : (
+						<div className={Styles.empty}>
+							<span className={Styles.emptyTitle}>Пустовато...</span>
+							<span className={Styles.emptyHint}>
+								Добавьте новый контакт плюсиком
+							</span>
+						</div>
+					)}
 			</div>
 			<ChatFooter />
 		</div>
